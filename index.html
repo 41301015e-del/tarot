@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星願塔羅｜每日一張牌</title>
+<style>
+:root{
+  --canvas:#f3eeff;--paper:#fff;--powder:#e5dcff;--powder-soft:#fbf9ff;
+  --sky:#72d7d0;--sky-soft:#e4faf8;--indigo:#6c58c7;--indigo-soft:#eeeafe;
+  --primary:#7a3db8;--primary-dark:#52247e;--primary-soft:#f0e2ff;
+  --green:#2f806d;--green-soft:#e1f6ef;--amber:#835900;--amber-soft:#fff0bf;
+  --red:#bd365f;--red-soft:#ffe1ea;--orange:#f47c48;--yellow:#ffd45c;
+  --ink:#342a4a;--soft-ink:#5c5072;--muted:#7e7392;--line:#ded4ef;
+  --glass:rgba(255,255,255,.84);--shadow:0 22px 60px rgba(92,57,145,.18);
+  --shadow-soft:0 12px 28px rgba(92,57,145,.12);
+  --radius-xl:38px;--radius-lg:28px;--radius-md:20px;
+}
+*{box-sizing:border-box}
+input,select,textarea{max-width:100%}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--ink);
+  font-family:"Arial Rounded MT Bold","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 8% 10%,rgba(114,215,208,.34),transparent 25%),
+    radial-gradient(circle at 92% 12%,rgba(255,212,92,.30),transparent 28%),
+    radial-gradient(circle at 52% 96%,rgba(189,54,95,.17),transparent 32%),
+    linear-gradient(135deg,#e5dcff 0%,#fbf9ff 48%,#e3f8f6 100%);
+  background-attachment:fixed;
+}
+button{font:inherit}
+.container{width:min(1120px,calc(100% - 32px));margin:auto;padding:24px 0 58px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 18px;border-radius:999px;background:var(--glass);backdrop-filter:blur(18px);border:2px solid rgba(255,255,255,.92);box-shadow:var(--shadow-soft);margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:.03em}
+.logo{width:42px;height:42px;border-radius:16px;display:grid;place-items:center;color:white;background:linear-gradient(135deg,var(--primary-dark),var(--primary));box-shadow:0 12px 24px rgba(122,61,184,.28);transform:rotate(-5deg);font-size:21px}
+.menu{display:flex;gap:8px;font-size:14px;font-weight:850;color:var(--soft-ink)}
+.menu a{text-decoration:none;color:inherit;padding:9px 12px;border-radius:999px}
+.menu a:hover{background:var(--amber-soft);color:var(--primary)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;margin-bottom:24px;align-items:stretch}
+.hero-card{position:relative;overflow:hidden;min-height:360px;padding:clamp(25px,5vw,48px);border-radius:var(--radius-xl);background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,255,255,.68)),linear-gradient(135deg,rgba(122,61,184,.2),rgba(114,215,208,.22),rgba(255,212,92,.18));border:2px solid rgba(255,255,255,.92);box-shadow:var(--shadow)}
+.hero-card:before{content:"";position:absolute;width:190px;height:190px;right:-62px;top:-62px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--primary));opacity:.72}
+.hero-card:after{content:"";position:absolute;width:130px;height:130px;left:-38px;bottom:-38px;border-radius:50%;background:linear-gradient(135deg,var(--green-soft),var(--sky));opacity:.84}
+.hero-content{position:relative;z-index:1;max-width:620px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 15px;background:var(--primary-soft);color:var(--primary-dark);font-size:14px;font-weight:950;margin-bottom:18px}
+h1{font-size:clamp(34px,5.4vw,60px);line-height:1.14;letter-spacing:.03em;margin:0}
+.accent{background:linear-gradient(90deg,var(--primary-dark),var(--primary),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:18px 0 0;color:var(--soft-ink);line-height:1.9;font-size:17px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:999px;padding:14px 20px;color:white;font-size:15px;font-weight:950;background:linear-gradient(135deg,var(--primary),var(--primary-dark));box-shadow:0 16px 28px rgba(122,61,184,.26);cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 18px 34px rgba(122,61,184,.32)}
+.btn:disabled{opacity:.48;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.light{color:var(--primary);background:rgba(255,255,255,.9);border:2px solid rgba(122,61,184,.2);box-shadow:var(--shadow-soft)}
+button:focus-visible,a:focus-visible{outline:3px solid rgba(122,61,184,.45);outline-offset:3px}
+.side{display:grid;gap:15px}
+.moon-card,.note-card{border-radius:var(--radius-xl);background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow-soft);padding:22px;backdrop-filter:blur(18px)}
+.moon-card{display:grid;align-content:space-between;min-height:170px;background:linear-gradient(135deg,rgba(229,220,255,.94),rgba(255,255,255,.8))}
+.moon-main{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.moon{width:76px;height:76px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 35%,#fff7ad,#facc15 58%,#fb923c);box-shadow:0 16px 32px rgba(250,204,21,.34);font-size:42px}
+.moon-card h2,.note-card h2{margin:0;font-size:23px}
+.moon-card p,.note-card p{margin:8px 0 0;color:var(--soft-ink);line-height:1.75}
+.note-points{display:grid;gap:9px;margin-top:14px}
+.note-point{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:17px;background:rgba(255,255,255,.72);border:1px solid var(--line);font-size:14px;color:var(--soft-ink)}
+.dot{width:32px;height:32px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;background:var(--primary-soft)}
+.section{border-radius:var(--radius-xl);background:var(--glass);border:2px solid rgba(255,255,255,.92);box-shadow:var(--shadow-soft);padding:26px;backdrop-filter:blur(18px);margin-bottom:22px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
+.section h2{margin:0;font-size:27px;letter-spacing:.02em}
+.desc{margin:6px 0 0;color:var(--soft-ink);line-height:1.75}
+.reading-layout{display:grid;grid-template-columns:minmax(230px,.78fr) 1.22fr;gap:20px;align-items:stretch}
+.draw-panel,.result-panel{border-radius:var(--radius-lg);background:rgba(255,255,255,.86);border:1px solid rgba(255,255,255,.95);box-shadow:var(--shadow-soft);padding:20px;min-width:0}
+.draw-panel{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.card-stage{width:min(100%,230px);perspective:1000px;margin:4px auto 15px}
+.tarot-card{position:relative;width:100%;aspect-ratio:3/5;border-radius:20px;padding:10px;background:linear-gradient(145deg,#52247e,#7a3db8 52%,#342a4a);box-shadow:0 18px 32px rgba(82,36,126,.28);border:4px solid #f4d98a;display:grid;place-items:center;overflow:hidden;transition:transform .55s}
+.tarot-card:before{content:"";position:absolute;inset:8px;border:1px solid rgba(255,235,174,.65);border-radius:13px}
+.tarot-card:after{content:"✦  ✧  ✦";position:absolute;top:17px;color:#ffe9a6;letter-spacing:13px;font-size:13px}
+.card-back-art{position:relative;z-index:1;width:78%;height:78%;border:2px solid rgba(255,233,166,.75);border-radius:50%;display:grid;place-items:center;color:#ffe9a6;font-size:64px;background:radial-gradient(circle,rgba(255,255,255,.13),transparent 65%)}
+.tarot-card.revealed{background:linear-gradient(145deg,#fffaf0,#eee2ff);border-color:#c49b54;color:var(--primary-dark)}
+.tarot-card.revealed:before{border-color:rgba(122,61,184,.35)}
+.card-front{position:relative;z-index:1;display:none;text-align:center;width:100%;color:var(--primary-dark)}
+.revealed .card-front{display:block}
+.revealed .card-back-art{display:none}
+.card-symbol{font-size:clamp(58px,9vw,86px);line-height:1.35;filter:drop-shadow(0 4px 4px rgba(82,36,126,.15))}
+.card-name{font-weight:950;font-size:20px;margin-top:8px}
+.card-subtitle{font-size:12px;letter-spacing:.12em;margin-top:5px;color:var(--muted)}
+.draw-panel h3{margin:3px 0 5px;font-size:19px}
+.draw-panel .hint{color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 14px}
+.result-panel{display:flex;flex-direction:column;gap:14px}
+.result-placeholder{flex:1;min-height:250px;border:2px dashed var(--line);border-radius:22px;display:grid;place-items:center;text-align:center;padding:24px;background:linear-gradient(145deg,#fbf9ff,#f3eeff)}
+.placeholder-icon{font-size:48px;margin-bottom:10px}
+.result-placeholder h3{margin:0 0 7px;font-size:20px}
+.result-placeholder p{margin:0;color:var(--muted);line-height:1.8;max-width:390px}
+.interpretation{display:none;border-radius:22px;padding:21px;background:linear-gradient(135deg,#fbf9ff,#f0e2ff);border:1px solid var(--line);line-height:1.85}
+.interpretation.show{display:block}
+.interpretation h3{margin:0 0 8px;color:var(--primary-dark);font-size:22px}
+.interpretation .keyword{display:inline-block;padding:6px 11px;border-radius:999px;background:white;color:var(--primary);font-weight:900;font-size:13px;margin:0 5px 9px 0}
+.interpretation p{margin:8px 0;color:var(--soft-ink)}
+.interpretation h4{margin:15px 0 4px;color:var(--primary-dark)}
+.status-line{min-height:24px;color:var(--muted);font-size:13px;text-align:center}
+.notice{padding:14px 16px;border-radius:18px;background:var(--sky-soft);color:#176779;line-height:1.7;font-size:14px}
+.footer{text-align:center;color:var(--muted);font-size:13px;line-height:1.8;padding:6px 12px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.reading-layout{grid-template-columns:1fr}.draw-panel{padding:18px}.card-stage{width:190px}}
+@media(max-width:620px){
+ .container{width:min(100% - 20px,1120px);padding-top:15px}
+ .topbar{border-radius:23px;padding:12px 14px}.menu{display:none}
+ .hero-card{min-height:0;border-radius:28px;padding:25px 22px}
+ .hero p{font-size:16px}.section{padding:17px;border-radius:27px}
+ .section h2{font-size:23px}.section-head{align-items:flex-start}
+ .moon-card,.note-card,.draw-panel,.result-panel{padding:16px;border-radius:23px}
+ .moon{width:60px;height:60px;font-size:34px}
+ .actions .btn{width:100%}
+ .card-stage{width:170px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* ===== 奇幻星界・銳角版 UI 覆寫 ===== */
+:root{
+  --canvas:#090817;--paper:#17132a;--powder:#292044;--powder-soft:#100d20;
+  --sky:#6de4e0;--sky-soft:#142d39;--indigo:#9a7bff;--indigo-soft:#282044;
+  --primary:#b58cff;--primary-dark:#e1c8ff;--primary-soft:#30204b;
+  --green:#79d9bd;--green-soft:#17362f;--amber:#f5cf79;--amber-soft:#3c2d20;
+  --red:#ff789e;--red-soft:#3b1c32;--orange:#ffad78;--yellow:#ffe6a1;
+  --ink:#f2eaff;--soft-ink:#c7b9df;--muted:#9c8db7;--line:#594777;
+  --glass:rgba(20,15,39,.88);--shadow:0 24px 70px rgba(0,0,0,.48);
+  --shadow-soft:0 12px 34px rgba(0,0,0,.32);
+  --radius-xl:3px;--radius-lg:2px;--radius-md:2px;
+}
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse at 14% 8%,rgba(121,83,190,.26),transparent 32%),
+    radial-gradient(ellipse at 88% 18%,rgba(39,115,145,.18),transparent 30%),
+    radial-gradient(ellipse at 50% 100%,rgba(112,57,153,.22),transparent 38%),
+    linear-gradient(145deg,#080713 0%,#111027 48%,#090817 100%);
+  background-attachment:fixed;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.28;
+  background-image:radial-gradient(#e5d2ff 1px,transparent 1px),radial-gradient(#9eeeff 1px,transparent 1px);
+  background-size:83px 83px,137px 137px;background-position:0 0,31px 47px;
+}
+.topbar,.hero-card,.moon-card,.note-card,.section,.draw-panel,.result-panel{
+  color:var(--ink);background-color:rgba(20,15,39,.88);
+  border:1px solid rgba(194,157,255,.58);
+  border-radius:2px;box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(18px);
+}
+.topbar{
+  border-radius:2px;padding:13px 20px;
+  background:linear-gradient(100deg,rgba(31,22,57,.96),rgba(15,25,45,.92));
+  box-shadow:0 0 0 1px rgba(245,207,121,.15),0 12px 34px rgba(0,0,0,.34);
+}
+.logo{
+  border-radius:2px;transform:none;color:#fff4d5;
+  background:linear-gradient(145deg,#7651b9,#30204b);
+  border:1px solid #e3c17c;box-shadow:0 0 22px rgba(181,140,255,.4);
+}
+.menu{color:var(--soft-ink)}
+.menu a{border-radius:2px}
+.menu a:hover{background:#382950;color:#ffe5a4}
+.hero{gap:22px}
+.hero-card{
+  background:
+    linear-gradient(120deg,rgba(26,19,48,.97),rgba(15,30,48,.92)),
+    radial-gradient(circle at 90% 15%,rgba(181,140,255,.2),transparent 40%);
+  border:1px solid #b58cff;box-shadow:0 0 0 1px rgba(245,207,121,.18),var(--shadow);
+}
+.hero-card:before{
+  width:220px;height:220px;right:-75px;top:-75px;border-radius:0;
+  transform:rotate(45deg);background:linear-gradient(135deg,#7455b8,#293c68);
+  opacity:.42;border:1px solid rgba(245,207,121,.45);
+}
+.hero-card:after{
+  width:110px;height:110px;left:-42px;bottom:-42px;border-radius:0;
+  transform:rotate(45deg);background:linear-gradient(135deg,#275e6b,#7953a8);
+  opacity:.38;
+}
+.eyebrow{
+  border-radius:2px;background:#30204b;color:#f3dba4;
+  border:1px solid rgba(245,207,121,.55);letter-spacing:.12em;
+}
+.accent{
+  background:linear-gradient(90deg,#f7dfa0,#d7b6ff 52%,#85e8e1);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p,.moon-card p,.note-card p,.desc,.draw-panel .hint,
+.result-placeholder p,.interpretation p{color:var(--soft-ink)}
+.btn{
+  border-radius:2px;border:1px solid #e7c987;
+  color:#fff7df;background:linear-gradient(115deg,#8056b9,#49316f 58%,#244d64);
+  box-shadow:0 0 22px rgba(181,140,255,.2),0 8px 22px rgba(0,0,0,.3);
+  letter-spacing:.06em;
+}
+.btn:hover{filter:brightness(1.2);box-shadow:0 0 28px rgba(181,140,255,.42)}
+.btn.light{
+  color:#eadbff;background:rgba(32,23,55,.94);
+  border:1px solid #9e83d1;box-shadow:inset 0 0 16px rgba(181,140,255,.08);
+}
+button:focus-visible,a:focus-visible{outline:2px solid #ffe39b;outline-offset:4px}
+.moon-card{
+  background:linear-gradient(135deg,rgba(40,29,67,.96),rgba(19,35,53,.94));
+}
+.moon{
+  border-radius:2px;transform:rotate(45deg) scale(.82);
+  background:radial-gradient(circle at 35% 35%,#fff5c7,#d8a95e 58%,#7951a8);
+  box-shadow:0 0 30px rgba(245,207,121,.28);
+}
+.note-point{
+  border-radius:2px;background:rgba(34,25,57,.82);
+  border:1px solid #51416f;color:var(--soft-ink);
+}
+.dot{border-radius:2px;background:#34234f}
+.section{
+  background:linear-gradient(135deg,rgba(24,18,44,.96),rgba(14,24,40,.94));
+  border:1px solid rgba(181,140,255,.58);
+  box-shadow:0 0 0 1px rgba(245,207,121,.1),var(--shadow-soft);
+}
+.section h2,.moon-card h2,.note-card h2{color:#f2e4ff}
+.draw-panel,.result-panel{
+  background:linear-gradient(145deg,rgba(34,25,57,.96),rgba(17,28,45,.96));
+  border:1px solid #5e4a80;
+}
+.tarot-card{
+  border-radius:2px;padding:10px;
+  background:
+    radial-gradient(circle at center,rgba(181,140,255,.2),transparent 52%),
+    linear-gradient(145deg,#16102b,#392052 52%,#101c31);
+  border:3px solid #e4c17c;
+  box-shadow:0 0 0 1px #765b9b,0 0 34px rgba(181,140,255,.24),0 18px 32px rgba(0,0,0,.5);
+}
+.tarot-card:before{
+  inset:8px;border:1px solid rgba(245,207,121,.8);border-radius:0;
+}
+.tarot-card:after{color:#f5d995;letter-spacing:16px}
+.card-back-art{
+  border:1px solid rgba(245,207,121,.9);border-radius:0;
+  color:#f5d995;background:radial-gradient(circle,rgba(181,140,255,.2),transparent 68%);
+  clip-path:polygon(50% 0,90% 20%,100% 50%,90% 80%,50% 100%,10% 80%,0 50%,10% 20%);
+}
+.tarot-card.revealed{
+  background:linear-gradient(145deg,#241b38,#342448);
+  border-color:#e6c77f;color:#f5eaff;
+}
+.tarot-card.revealed:before{border-color:rgba(245,207,121,.58)}
+.card-front{color:#f4eaff}
+.card-subtitle{color:#c7afdF}
+.result-placeholder{
+  border:1px dashed #806ba5;border-radius:2px;
+  background:linear-gradient(145deg,rgba(26,19,47,.96),rgba(18,32,48,.96));
+}
+.result-placeholder h3{color:#f1e3ff}
+.interpretation{
+  border-radius:2px;padding:21px;
+  background:linear-gradient(135deg,rgba(43,30,67,.98),rgba(20,35,52,.98));
+  border:1px solid #8267aa;color:var(--ink);
+}
+.interpretation h3,.interpretation h4{color:#f5d995}
+.interpretation .keyword{
+  border-radius:2px;background:#33234e;color:#ead6ff;
+  border:1px solid #71558f;
+}
+.status-line{color:#b8a8d0}
+.notice{
+  border-radius:2px;background:rgba(24,55,61,.9);
+  border:1px solid #397b7e;color:#baf4e8;
+}
+.footer{color:#a99aba}
+@media(max-width:620px){
+  .topbar{border-radius:2px}
+  .menu a{padding:8px 7px}
+  .hero-card{min-height:320px}
+}
+@media(prefers-reduced-motion:no-preference){
+  .tarot-card{animation:arcaneGlow 5s ease-in-out infinite alternate}
+  @keyframes arcaneGlow{
+    from{box-shadow:0 0 0 1px #765b9b,0 0 22px rgba(181,140,255,.18),0 18px 32px rgba(0,0,0,.5)}
+    to{box-shadow:0 0 0 1px #e4c17c,0 0 38px rgba(181,140,255,.38),0 18px 32px rgba(0,0,0,.5)}
+  }
+}
+
+</style>
+</head>
+<body>
+<main class="container">
+  <nav class="topbar" aria-label="主要導覽">
+    <div class="brand"><div class="logo">✦</div><span>星願塔羅・心靈探索站</span></div>
+    <div class="menu"><a href="#reading">開始抽牌</a><a href="#about">使用提醒</a></div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-content">
+        <div class="eyebrow">🌙 TAROT · A MOMENT FOR YOURSELF</div>
+        <h1>讓一張牌，<br><span class="accent">陪你整理心中的問題</span></h1>
+        <p>先靜下心想一個問題，抽出今天的塔羅牌。牌面會先保留神祕感，等你按下「AI 詮釋牌義」，再閱讀這張牌帶來的象徵與自我探索提示。</p>
+        <div class="actions"><a class="btn" href="#reading">🔮 開始今日占卜</a><a class="btn light" href="#about">✨ 了解使用方式</a></div>
+      </div>
+    </div>
+    <aside class="side">
+      <div class="moon-card">
+        <div class="moon-main"><div><h2>今日靈感提示</h2><p>不急著尋找答案，先聽聽自己真正重視的是什麼。</p></div><div class="moon" aria-hidden="true">🪐</div></div>
+        <p style="font-size:13px;color:var(--muted)">每一次抽牌，都是一次整理思緒的小練習。</p>
+      </div>
+      <div class="note-card">
+        <h2>📡 占卜小提醒</h2>
+        <div class="note-points">
+          <div class="note-point"><span class="dot">💭</span><span>先在心中想好一個想探索的問題</span></div>
+          <div class="note-point"><span class="dot">🃏</span><span>每次抽取一張牌，結果暫時不公開</span></div>
+          <div class="note-point"><span class="dot">🌱</span><span>把解讀當作反思參考，而非命運定論</span></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="section" id="reading">
+    <div class="section-head"><div><h2>一、抽出你的專屬塔羅牌</h2><p class="desc">準備好了嗎？按下按鈕，讓牌卡為你帶來一個新的思考角度。</p></div></div>
+    <div class="reading-layout">
+      <div class="draw-panel">
+        <div class="card-stage">
+          <div class="tarot-card" id="tarotCard" aria-label="尚未抽牌，牌面朝下">
+            <div class="card-back-art" aria-hidden="true">☾</div>
+            <div class="card-front">
+              <div class="card-symbol" id="cardSymbol">✦</div>
+              <div class="card-name" id="cardName">等待抽牌</div>
+              <div class="card-subtitle">YOUR TAROT CARD</div>
+            </div>
+          </div>
+        </div>
+        <h3 id="drawTitle">等待命運翻牌</h3>
+        <p class="hint" id="drawHint">抽牌後只會顯示牌面，不會立刻公開解讀。</p>
+        <button class="btn" id="drawBtn" type="button">🃏 抽一張塔羅牌</button>
+        <div class="status-line" id="status" role="status" aria-live="polite">尚未抽牌</div>
+      </div>
+      <div class="result-panel">
+        <div class="result-placeholder" id="placeholder">
+          <div><div class="placeholder-icon">🔐</div><h3>解讀內容已上鎖</h3><p>抽牌完成後，按下下方的「AI 詮釋牌義」，才會顯示牌卡象徵、提醒與反思方向。</p></div>
+        </div>
+        <div class="interpretation" id="interpretation" aria-live="polite"></div>
+        <div class="notice">💡 <strong>小提醒：</strong>此工具使用內建牌義資料產生「AI 風格」的文字詮釋，無連接外部 AI 服務；內容適合娛樂與自我反思，不應取代專業建議或作為重大決策的唯一依據。</div>
+        <div class="actions" style="margin-top:0">
+          <button class="btn" id="interpretBtn" type="button" disabled>✨ AI 詮釋牌義</button>
+          <button class="btn light" id="againBtn" type="button">🔄 重新抽牌</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="section-head"><div><h2>二、如何使用這個小工具？</h2><p class="desc">三個簡單步驟，讓抽牌成為整理想法的開始。</p></div></div>
+    <div class="note-points">
+      <div class="note-point"><span class="dot">1️⃣</span><span><strong>想一個問題：</strong>可以是最近在意的事情，或想了解自己的方向。</span></div>
+      <div class="note-point"><span class="dot">2️⃣</span><span><strong>抽出一張牌：</strong>系統會隨機抽牌，先呈現牌面與名稱。</span></div>
+      <div class="note-point"><span class="dot">3️⃣</span><span><strong>查看詮釋：</strong>按下解讀按鈕，閱讀象徵意義與反思問題。</span></div>
+    </div>
+  </section>
+  <footer class="footer">✦ 星願塔羅 ✦<br>塔羅牌義是一種象徵性的敘事工具，請保留自己的判斷與選擇。</footer>
+</main>
+<script>
+"use strict";
+// 內建 22 張大阿爾克那牌義；不傳送任何資料到外部服務。
+const cards = [
+ {name:"愚者",symbol:"🎒",keywords:["新的開始","好奇","勇氣"],meaning:"愚者象徵旅程的起點，以及願意帶著好奇心踏出第一步。你不必在出發前就掌握所有答案，可以先探索，再從經驗中學習。",advice:"保持開放心態，同時替自己留一點準備時間。勇敢不等於毫無計畫。",question:"如果不用一次做到完美，你願意先嘗試哪一小步？"},
+ {name:"魔術師",symbol:"🪄",keywords:["行動力","資源","創造"],meaning:"魔術師提醒你，手邊可能已經有可運用的能力與資源。與其等待完美時機，不如把想法整理成具體行動。",advice:"列出你已經擁有的工具、知識或可以求助的人，選一項先開始。",question:"目前有哪些資源，是你還沒有充分運用的？"},
+ {name:"女祭司",symbol:"🌙",keywords:["直覺","觀察","沉澱"],meaning:"女祭司代表安靜觀察與內在理解。眼前的事情或許還有尚未看清的部分，先不用急著下結論。",advice:"給自己一些安靜思考的時間，也試著分辨事實、猜測與感受。",question:"如果先不急著回應，你會注意到什麼？"},
+ {name:"皇后",symbol:"🌷",keywords:["滋養","創造","關懷"],meaning:"皇后象徵照顧、成長與創造力。這張牌邀請你留意生活中值得培養的關係、想法與日常。",advice:"把時間分配給真正重要的人事物，也記得照顧自己的基本需要。",question:"最近有什麼值得你耐心灌溉、慢慢培養？"},
+ {name:"皇帝",symbol:"👑",keywords:["秩序","界線","責任"],meaning:"皇帝代表架構、責任與穩定。當事情顯得混亂時，清楚的規則與界線可能幫助你重新掌握方向。",advice:"把目標拆成步驟，確認哪些事情由你負責、哪些需要與他人協調。",question:"哪一項規則或界線能讓目前的情況更清楚？"},
+ {name:"教皇",symbol:"📖",keywords:["學習","傳承","價值"],meaning:"教皇象徵知識、傳承與共同價值。你可以向可信任的人請益，也可以重新檢視自己真正認同的原則。",advice:"尋找可靠資訊或有經驗的引導者，但仍要保留獨立思考。",question:"你想遵循的原則，真的是自己認同的嗎？"},
+ {name:"戀人",symbol:"💞",keywords:["選擇","連結","一致"],meaning:"戀人牌不只關於關係，也關於選擇是否符合自己的價值。重要的是誠實理解彼此的需要。",advice:"做選擇前，試著說清楚自己在意什麼，也尊重他人的感受與界線。",question:"哪一個選擇最接近你重視的價值？"},
+ {name:"戰車",symbol:"🏇",keywords:["專注","決心","前進"],meaning:"戰車象徵方向感與持續前進。當不同想法拉扯你時，先確認目標，再把注意力放回能掌握的事情。",advice:"選定一個優先目標，避免同時承擔太多任務。",question:"此刻最值得你集中精神完成的是哪件事？"},
+ {name:"力量",symbol:"🦁",keywords:["耐心","溫柔","韌性"],meaning:"力量牌代表穩定而溫柔的勇氣。真正的力量不一定是強硬，也可能是理解情緒、耐心溝通與持續練習。",advice:"用不傷害自己或他人的方式處理困難，必要時尋求支持。",question:"你可以用什麼更溫和但堅定的方式面對眼前挑戰？"},
+ {name:"隱者",symbol:"🏮",keywords:["獨處","尋找","反思"],meaning:"隱者提醒你暫時放慢腳步，透過獨處、閱讀或整理思緒，尋找真正適合自己的方向。",advice:"安排一段不被打擾的時間，寫下目前最重要的疑問。",question:"當外界聲音變小，你內心最想告訴自己什麼？"},
+ {name:"命運之輪",symbol:"🎡",keywords:["變化","循環","機會"],meaning:"命運之輪象徵變化與循環。生活中有些因素不完全由你控制，但你仍能選擇如何回應新的情況。",advice:"保持彈性，觀察變化帶來的可能性，並把注意力放在可控制的部分。",question:"面對正在改變的事情，你可以調整哪一個做法？"},
+ {name:"正義",symbol:"⚖️",keywords:["公平","誠實","判斷"],meaning:"正義牌邀請你以清楚、公平的方式看待事情。檢視資訊是否完整，也留意自己的行動會帶來什麼影響。",advice:"先確認事實，再衡量不同立場與可能後果。",question:"如果把所有人的立場都納入考量，你會如何判斷？"},
+ {name:"倒吊人",symbol:"🙃",keywords:["換位思考","等待","放下"],meaning:"倒吊人象徵暫停與視角轉換。暫時不採取行動，有時能讓你看見原本忽略的線索。",advice:"試著從另一個角度重新描述問題，不必急著推進。",question:"如果換一個角度看，這件事可能有什麼不同解釋？"},
+ {name:"死神",symbol:"🦋",keywords:["轉變","告別","更新"],meaning:"死神牌通常象徵階段結束與轉變，而不是字面上的死亡。它提醒你辨認哪些舊模式已不再適合，並為新的可能性留出空間。",advice:"不必勉強維持已經不合適的做法；可以先整理，再決定下一步。",question:"有什麼舊習慣或想法，是你準備重新檢視的？"},
+ {name:"節制",symbol:"🏺",keywords:["平衡","協調","節奏"],meaning:"節制代表調整比例、整合差異與找到可持續的節奏。事情未必需要立刻走向極端答案。",advice:"試著把任務分配得更平均，為休息與溝通保留空間。",question:"生活中哪個部分需要重新調整比例？"},
+ {name:"惡魔",symbol:"⛓️",keywords:["慣性","執著","覺察"],meaning:"惡魔牌象徵被習慣、慾望或外在期待牽制的感受。它不是對你的批判，而是邀請你看見自己是否仍有選擇空間。",advice:"辨認讓你感到受限的模式，從一個小而可行的改變開始。",question:"有哪個習慣正在消耗你，值得重新評估？"},
+ {name:"高塔",symbol:"⚡",keywords:["震盪","真相","重整"],meaning:"高塔象徵原有認知或安排受到挑戰。變動可能令人不安，但也能促使你重新確認什麼才是穩固而重要的。",advice:"先穩住步調、確認現況，再逐步處理需要調整的部分。",question:"當原本的計畫改變時，哪些核心價值仍然值得保留？"},
+ {name:"星星",symbol:"⭐",keywords:["希望","療癒","信任"],meaning:"星星代表希望、修復與重新相信可能性。即使進度緩慢，持續照顧自己也能帶來新的力量。",advice:"找一件能讓你恢復能量的小事，並允許自己循序漸進。",question:"什麼事情能讓你重新感受到希望或支持？"},
+ {name:"月亮",symbol:"🌕",keywords:["不確定","想像","辨別"],meaning:"月亮象徵尚未明朗的情況與複雜感受。當資訊不足時，想像可能放大擔憂，因此值得多確認、少急著定論。",advice:"把已知事實與自己的推測分開，必要時向可信任的人確認。",question:"目前有哪些事情是事實，哪些仍只是你的猜測？"},
+ {name:"太陽",symbol:"☀️",keywords:["活力","清晰","分享"],meaning:"太陽象徵清晰、活力與坦然表達。這張牌鼓勵你看見已經取得的進展，也分享值得珍惜的成果。",advice:"肯定自己的努力，並把好消息或感謝傳達給重要的人。",question:"最近有哪些小小的進步值得你肯定？"},
+ {name:"審判",symbol:"📯",keywords:["回顧","醒悟","更新"],meaning:"審判牌代表回顧經驗、理解自己並重新選擇。過去的經歷可以成為學習材料，而不是限制未來的標籤。",advice:"整理過去的收穫，決定接下來想採取的不同做法。",question:"從這段經驗中，你最想帶走的一個學習是什麼？"},
+ {name:"世界",symbol:"🌍",keywords:["完成","整合","新階段"],meaning:"世界象徵一個階段的完成與整合。回頭看見自己走過的路，也能幫助你帶著經驗進入下一段旅程。",advice:"為已完成的努力留一點肯定，再設定下一個適合自己的目標。",question:"你想如何慶祝這個階段的成果，並迎接下一步？"}
+];
+let selectedCard = null;
+let isInterpreted = false;
+const cardEl = document.getElementById("tarotCard");
+const nameEl = document.getElementById("cardName");
+const symbolEl = document.getElementById("cardSymbol");
+const drawBtn = document.getElementById("drawBtn");
+const interpretBtn = document.getElementById("interpretBtn");
+const againBtn = document.getElementById("againBtn");
+const placeholder = document.getElementById("placeholder");
+const interpretation = document.getElementById("interpretation");
+const statusEl = document.getElementById("status");
+const drawTitle = document.getElementById("drawTitle");
+const drawHint = document.getElementById("drawHint");
+
+function drawCard(){
+  // 避免連續抽到同一張牌；首次抽牌則從完整牌組隨機選取。
+  let next;
+  do { next = cards[Math.floor(Math.random() * cards.length)]; }
+  while(cards.length > 1 && selectedCard && next.name === selectedCard.name);
+  selectedCard = next;
+  isInterpreted = false;
+  cardEl.classList.add("revealed");
+  cardEl.setAttribute("aria-label","已抽出："+selectedCard.name);
+  nameEl.textContent = selectedCard.name;
+  symbolEl.textContent = selectedCard.symbol;
+  drawTitle.textContent = "你抽到的是："+selectedCard.name;
+  drawHint.textContent = "牌面已揭曉，解讀內容仍然保密。";
+  placeholder.hidden = false;
+  placeholder.innerHTML = '<div><div class="placeholder-icon">🔐</div><h3>解讀內容已上鎖</h3><p>按下「AI 詮釋牌義」，再閱讀這張牌的象徵與反思方向。</p></div>';
+  interpretation.classList.remove("show");
+  interpretation.innerHTML = "";
+  interpretBtn.disabled = false;
+  statusEl.textContent = "抽牌完成！解讀尚未公開。";
+  drawBtn.textContent = "🃏 再抽一張牌";
+}
+function interpretCard(){
+  if(!selectedCard){statusEl.textContent="請先抽一張牌，再查看詮釋。";return;}
+  if(isInterpreted){statusEl.textContent="這張牌已經解讀過了；重新抽牌即可查看另一張。";return;}
+  const c = selectedCard;
+  interpretation.innerHTML = `
+    <h3>${c.symbol} ${c.name}｜牌義詮釋</h3>
+    <div>${c.keywords.map(k=>`<span class="keyword">${k}</span>`).join("")}</div>
+    <h4>🌟 這張牌想提醒你</h4><p>${c.meaning}</p>
+    <h4>🧭 可以嘗試的方向</h4><p>${c.advice}</p>
+    <h4>💭 給自己的反思問題</h4><p>${c.question}</p>`;
+  interpretation.classList.add("show");
+  placeholder.hidden = true;
+  isInterpreted = true;
+  interpretBtn.disabled = true;
+  statusEl.textContent = "牌義已揭曉。你可以把它當作整理思緒的參考。";
+}
+function resetReading(){
+  selectedCard = null;
+  isInterpreted = false;
+  cardEl.classList.remove("revealed");
+  cardEl.setAttribute("aria-label","尚未抽牌，牌面朝下");
+  nameEl.textContent = "等待抽牌";
+  symbolEl.textContent = "✦";
+  drawTitle.textContent = "等待命運翻牌";
+  drawHint.textContent = "抽牌後只會顯示牌面，不會立刻公開解讀。";
+  interpretation.classList.remove("show");
+  interpretation.innerHTML = "";
+  placeholder.hidden = false;
+  placeholder.innerHTML = '<div><div class="placeholder-icon">🔐</div><h3>解讀內容已上鎖</h3><p>抽牌完成後，按下下方的「AI 詮釋牌義」，才會顯示牌卡象徵、提醒與反思方向。</p></div>';
+  interpretBtn.disabled = true;
+  drawBtn.textContent = "🃏 抽一張塔羅牌";
+  statusEl.textContent = "已重設，準備重新抽牌。";
+}
+drawBtn.addEventListener("click",drawCard);
+interpretBtn.addEventListener("click",interpretCard);
+againBtn.addEventListener("click",resetReading);
+</script>
+</body>
+</html>
